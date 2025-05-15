@@ -20,7 +20,7 @@ public class EncHasFormularioDAO {
     public ArrayList<EncHasFormulario> getByEncuestador(int idEnc) {
         ArrayList<EncHasFormulario> asignaciones = new ArrayList<>();
 
-        String sql = "SELECT * FROM usuario_has_formulario WHERE enc_idusuario = ?";
+        String sql = "SELECT * FROM enc_has_formulario WHERE enc_idusuario = ?";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -34,7 +34,7 @@ public class EncHasFormularioDAO {
                     EncHasFormulario a = new EncHasFormulario();
 
                     a.setIdEncHasFormulario(rs.getInt("idenc_has_formulario"));
-                    a.setFechaAsignacion(rs.getDate("fechaAsignacion"));
+                    a.setFechaAsignacion(rs.getDate("fecha_asignacion"));
                     a.setCodigo(rs.getString("codigo"));
 
                     // Obtener formulario por id

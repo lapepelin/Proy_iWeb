@@ -7,9 +7,10 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Map" %>
 <%@ page import="com.example.unmujeres.beans.Formulario" %>
 <%
-    ArrayList<Formulario> lista = (ArrayList<Formulario>)request.getAttribute("formulariosAsignados");
+    ArrayList<Map<String, Object>> datos = (ArrayList<Map<String, Object>>) request.getAttribute("datos");
 %>
 
 <html>
@@ -53,7 +54,7 @@
                                     <thead>
                                     <tr>
                                         <th>ID de formulario</th>
-                                        <th>Distrito</th>
+                                        <th>Nombre</th>
                                         <th>Respuestas registradas</th>
                                         <th>Respuestas esperadas</th>
                                         <th>Fecha de asignación (YYYY-MM-DD)</th>
@@ -63,17 +64,18 @@
 
                                     <tbody>
                                     <%
-                                        if (lista != null && !lista.isEmpty()) {
-                                            for (Formulario form : lista) {
+                                        if (datos != null && !datos.isEmpty()) {
+                                            for (Map<String, Object> item: datos) {
                                     %>
                                     <tr>
-                                        <td><%=form.getIdFormulario()%></td>
-                                        <td><%=form.getNombre()%></td>
-                                        <td><%=form.getRegistrosCompletados()%></td>
-                                        <td><%=form.getRegistrosEsperados()%></td>
-                                        <td><%=form.getFechaAsignacion()%></td>
-                                        <td><%=form.getFechaLimite()%></td>
-                                        <td><a href="<%=request.getContextPath()%>/ServletA?action=regCrear&id=<%=form.getIdFormulario()%>">Crear Registro</a></td>
+                                        <td><%= item.get("id_formulario") %></td>
+                                        <td><%= item.get("nombre_formulario") %></td>
+                                        <td><%= item.get("registros_comletados") %></td>
+                                        <td><%= item.get("registros_esperados") %></td>
+                                        <td><%= item.get("fecha_asignacion") %></td>
+                                        <td><%= item.get("fecha_limite") %></td>
+
+                                        <td><a href="<%=request.getContextPath()%>/ServletA?action=regCrear&id=<%= item.get("id_formulario") %>">Crear Registro</a></td>
                                     </tr>
                                     <%
                                             }

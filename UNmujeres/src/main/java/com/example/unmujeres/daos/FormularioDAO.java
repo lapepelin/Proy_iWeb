@@ -64,7 +64,7 @@ public class FormularioDAO {
                     RegistroRespuestas reg = new RegistroRespuestas();
 
                     fa.setIdFormulario(rs.getInt("idformulario"));
-                    fa.setNombre(rs.getString("nombres"));
+                    fa.setNombre(rs.getString("nombre"));
                     fa.setRegistrosEsperados(rs.getInt("registros_esperados"));
                     //reg.setRegistrosCompletados(rs.getInt("registros_completados"));
                     asig.setFechaAsignacion(rs.getDate("fecha_asignacion"));
@@ -94,7 +94,7 @@ public class FormularioDAO {
                     formulario = new Formulario();
 
                     formulario.setIdFormulario(rs.getInt("idformulario"));
-                    formulario.setNombre(rs.getString("nombres"));
+                    formulario.setNombre(rs.getString("nombre"));
                     formulario.setFechaLimite(rs.getDate("fecha_limite"));
                     formulario.setEstado(rs.getBoolean("estado"));
                     formulario.setRegistrosEsperados(rs.getInt("registros_esperados"));

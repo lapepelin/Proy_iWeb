@@ -45,10 +45,6 @@ public class VerFormulariosServlet extends HttpServlet {
 
             case "lista":
                 int idEnc = 7;  //Integer.parseInt(request.getParameter("id"));
-                //EncHasFormularioDAO ehfDAO = new EncHasFormularioDAO();
-                //ArrayList<EncHasFormulario> asignaciones = ehfDAO.getByEncuestador(idEnc);
-
-                //ArrayList<Formulario> formularios = formsAsig.listarFormulariosAsignados(idEnc);
 
                 try {
                     // 1. Obtener DAOs
@@ -57,7 +53,7 @@ public class VerFormulariosServlet extends HttpServlet {
                     FormularioDAO formularioDAO = new FormularioDAO();
 
                     // 2. Obtener asignaciones
-                    ArrayList<EncHasFormulario> asignaciones = ehfDAO.getByEncuestador(7); // ID hardcodeado
+                    ArrayList<EncHasFormulario> asignaciones = ehfDAO.getByEncuestador(idEnc); // ID hardcodeado
 
                     // 3. Estructura para vista
                     ArrayList<Map<String, Object>> datos = new ArrayList<>();
@@ -66,25 +62,21 @@ public class VerFormulariosServlet extends HttpServlet {
                         // 4. Obtener formulario relacionado
                         Formulario formulario = formularioDAO.getById(asignacion.getFormulario().getIdFormulario());
 
-
-                        if (formulario != null && formulario.isEstado() == 1) {
-
+                        if (formulario != null && formulario.isEstado() == true) {
                             Map<String, Object> item = new LinkedHashMap<>();
 
                             // 5. Datos formulario
                             item.put("id_formulario", formulario.getIdFormulario());
                             item.put("nombre_formulario", formulario.getNombre());
                             item.put("fecha_limite", formulario.getFechaLimite());
+                            item.put("registros esperado", formulario.getRegistrosEsperados());
 
                             // 7. Datos asignacion ehf
                             item.put("fecha_asignacion", asignacion.getFechaAsignacion());
 
                             // 8. Datos registro
-                            
-                            item.put("registros", size(asignaciones);
-
-
-
+                            ArrayList<RegistroRespuestas> registros = registroDAO.getByEhf(asignacion.getIdEncHasFormulario());
+                            item.put("registros completados", registros.size());
 
                             datos.add(item);
                         }
@@ -92,7 +84,8 @@ public class VerFormulariosServlet extends HttpServlet {
 
                     // 9. Enviar a vista
                     request.setAttribute("datos", datos);
-                    request.getRequestDispatcher("/WEB-INF/vistas/listado.jsp").forward(request, response);
+                    view = request.getRequestDispatcher("/showAssignedForms.jsp");
+                    view.forward(request, response);
 
                 } catch (Exception e) {
                     request.setAttribute("error", "Error: " + e.getMessage());

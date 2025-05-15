@@ -25,7 +25,7 @@ public class UsuarioDAO {
                 if (rs.next()) {
                     usuario = new Usuario();
 
-                    usuario.setIdUsuario(rs.getInt("idformulario"));
+                    usuario.setIdUsuario(rs.getInt("idusuario"));
                     usuario.setNombres(rs.getString("nombres"));
                     usuario.setApellidos(rs.getString("apellidos"));
                     usuario.setFechaIncorporacion(rs.getDate("fecha_limite"));
