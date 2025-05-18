@@ -13,9 +13,7 @@
 %>
 
 <html>
-
 <jsp:include page="header.jsp" />
-
 <body id="page-top">
 
     <!-- Page Wrapper -->

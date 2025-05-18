@@ -11,7 +11,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
   <!-- Sidebar - Brand -->
-  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="indexEnc.jsp">
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="indexEnc.html">
     <div class="sidebar-brand-icon">
       <img src="img/ONU.png" alt="Logo ONU Mujeres" style="max-width: 100%;">
     </div>
@@ -23,7 +23,7 @@
 
   <!-- Nav Item - Dashboard -->
   <li class="nav-item ${pageAct eq 'dashboard' ? 'active' : ''}">
-    <a class="nav-link" href="showDashboard.jsp">
+    <a class="nav-link" href="indexEnc.html">
       <i class="fas fa-fw fa-tachometer-alt"></i>
       <span>Resumen</span></a>
   </li>

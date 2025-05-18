@@ -65,7 +65,8 @@ public class RegistroRespuestasDAO extends BaseDAO {
         return reg;
     }
 
-    //public void save(RegistroRespuestas reg) {}
+    public void save(RegistroRespuestas reg) {}
+
 
     public void delete(int id) {
         String sql = "DELETE FROM registro_respuestas WHERE idregistro_respuestas = ?";
@@ -79,6 +80,22 @@ public class RegistroRespuestasDAO extends BaseDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateState(int id, String estado) {
+        String sql = "UPDATE registro_respuestas SET estado = ? WHERE idregistro_respuestas = ?";
+
+        try (Connection con = this.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);){
+
+            ps.setInt(1, id);
+            ps.setString(2, estado);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

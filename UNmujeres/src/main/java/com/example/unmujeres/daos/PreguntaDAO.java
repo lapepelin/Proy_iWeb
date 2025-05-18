@@ -13,15 +13,15 @@ import java.sql.SQLException;
 
 public class PreguntaDAO extends BaseDAO{
 
-    public ArrayList<Pregunta> listaPreguntas(int idFormulario) {
-
-        ArrayList<Pregunta> preguntas  = new ArrayList<>();
-
-        String sql = "Select * from pregunta where id=" + idFormulario;
-
-
-
-        return preguntas;
-    }
+//    public ArrayList<Pregunta> listaPreguntas(int idFormulario) {
+//
+//        ArrayList<Pregunta> preguntas  = new ArrayList<>();
+//
+//        String sql = "Select * from pregunta where id=?";
+//
+//
+//
+//        return preguntas;
+//    }
 
 }

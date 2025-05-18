@@ -1,20 +1,16 @@
 package com.example.unmujeres.servlets;
 
-import com.example.unmujeres.beans.EncHasFormulario;
-import com.example.unmujeres.beans.Formulario;
-import com.example.unmujeres.beans.RegistroRespuestas;
-import com.example.unmujeres.daos.EncHasFormularioDAO;
-import com.example.unmujeres.daos.FormularioDAO;
-import com.example.unmujeres.daos.RegistroRespuestasDAO;
+import com.example.unmujeres.beans.*;
+import com.example.unmujeres.daos.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 @WebServlet(
         name = "VerFormulariosServlet",
@@ -33,22 +29,25 @@ public class VerFormulariosServlet extends HttpServlet {
         configValue = getServletConfig().getInitParameter("config");
     }
 
+    EncHasFormularioDAO ehfDAO = new EncHasFormularioDAO();
+    RegistroRespuestasDAO registroDAO = new RegistroRespuestasDAO();
+    FormularioDAO formularioDAO = new FormularioDAO();
+    RespuestaDAO respuestaDAO = new RespuestaDAO();
+    OpcionPreguntaDAO opcionDAO = new OpcionPreguntaDAO();
+    int idEnc = 7;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action") == null ? "lista" : request.getParameter("action");
-        int idEnc = 7;
-
-        EncHasFormularioDAO ehfDAO = new EncHasFormularioDAO();
-        RegistroRespuestasDAO registroDAO = new RegistroRespuestasDAO();
-        FormularioDAO formularioDAO = new FormularioDAO();
         RequestDispatcher view;
 
         switch (action) {
 
             case "lista2":
-
                 try {
                     System.out.println("Se consulto lista de asignados metodo 2");
                     //FormularioDAO formularioDAO = new FormularioDAO();
@@ -65,7 +64,6 @@ public class VerFormulariosServlet extends HttpServlet {
                 break;
 
             case "lista":
-                //int idEnc = 7;
                 try {
                     System.out.println("Se consulto lista de asignados metodo 1");
 
@@ -119,7 +117,6 @@ public class VerFormulariosServlet extends HttpServlet {
 
             case "historial":
                 System.out.println("Se consulto historial");
-                //int idEnc = 7;
                 try {
 
                     // 2. Inicializar arreglos de datos (borradores y completados)
@@ -166,14 +163,8 @@ public class VerFormulariosServlet extends HttpServlet {
                         request.setAttribute("drafts", datos1);
                         request.setAttribute("records", datos2);
                     }
-
-                    // 4. lista de completados
-
-                    // unir con anterior for?
-
                     view = request.getRequestDispatcher("/responsesHistory.jsp");
                     view.forward(request, response);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -181,6 +172,7 @@ public class VerFormulariosServlet extends HttpServlet {
 
             case "editar":
                 int idReg = Integer.parseInt(request.getParameter("id"));
+                System.out.println("Se consulto el editor del registro con id: " + idReg);
 
                 RegistroRespuestas registro = registroDAO.getById(idReg);
 
@@ -188,7 +180,13 @@ public class VerFormulariosServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/VerFormulariosServlet");
                 } else {
                     request.setAttribute("registro", registro);
-                    view = request.getRequestDispatcher("/2");
+
+                    ArrayList<OpcionPregunta> opciones = opcionDAO.getByReg(idReg);
+                    request.setAttribute("opciones", opciones);
+
+                    ArrayList<Respuesta> respuestas = respuestaDAO.listaRespuestas(idReg);
+                    request.setAttribute("respuestas", respuestas);
+                    view = request.getRequestDispatcher("/editResponse.jsp");
                     view.forward(request, response);
                 }
                 break;
@@ -208,42 +206,74 @@ public class VerFormulariosServlet extends HttpServlet {
                 }
                 break;
         }
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action") == null ? "lista" : request.getParameter("action");
-
         RequestDispatcher view;
 
         switch (action) {
             case "crearReg":
 
                 break;
-            case "editarReg":
-                //String jobId = request.getParameter("id");
-                //Job Job = jobDao.obtenerTrabajo(jobId);
-                //if(Job == null){
-                //    response.sendRedirect(request.getContextPath() + "/Servlet");
-                //}else{
-                //    request.setAttribute("trabajo",Job);
+            case "editar":
+                String acto = request.getParameter("acto");
+                String nuevoEstado;
+                if (Objects.equals(acto, "borrador")) {
+                    nuevoEstado = "B";
+                } else if (Objects.equals(acto, "completado")) {
+                    nuevoEstado = "C";
+                } else {
+                    // Valor por defecto o generar error
+                    nuevoEstado = "B";
+                }
+
+                int idReg = Integer.parseInt(request.getParameter("idregistro"));
+                registroDAO.updateState(idReg,nuevoEstado);
+
+                Map<String, String[]> parametroMap = request.getParameterMap();
+                // Itera sobre los parámetros para identificar elementos que comiencen con "respuesta_"
+                for (String paramName : parametroMap.keySet()) {
+                    if (paramName.startsWith("respuesta_")) {
+                        // Extrae el id de la pregunta del nombre del input (por ejemplo, "respuesta_45")
+                        String idStr = paramName.substring("respuesta_".length());
+                        try {
+                            int idPregunta = Integer.parseInt(idStr);
+                            // Obtiene el valor del input
+                            String nuevaRespuesta = request.getParameter(paramName);
+                            if (nuevaRespuesta != null) {
+                                nuevaRespuesta = nuevaRespuesta.trim();
+                            }
+                            // Actualiza la respuesta para esa pregunta en el registro de respuestas
+                            respuestaDAO.updateResponse(idReg, idPregunta, nuevaRespuesta);
+
+                        } catch (NumberFormatException e) {
+                            System.err.println("ID de pregunta inválido en el parámetro: " + paramName);
+                        }
+                    }
+                }
+
+                String resp = request.getParameter("respuesta");
+
+                //ArrayList<Respuesta> respuestas = request.getParameter(resp);
+
                 break;
         }
 
 
 
-        request.setCharacterEncoding("UTF-8");
+
 
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Ejemplo básico para otros métodos HTTP
-        resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+        response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
     }
 }

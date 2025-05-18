@@ -1,19 +1,19 @@
 package com.example.unmujeres.beans;
 
 public class Pregunta {
-    private int idpregunta;
+    private int idPregunta;
     private String enunciado;
-    private String tipo_dato;
+    private String tipoDato;
     private Seccion seccion;
 
     public Pregunta() {
     }
 
-    public int getIdpregunta() {
-        return idpregunta;
+    public int getIdPregunta() {
+        return idPregunta;
     }
-    public void setIdpregunta(int idpregunta) {
-        this.idpregunta = idpregunta;
+    public void setIdPregunta(int idPregunta) {
+        this.idPregunta = idPregunta;
     }
 
     public String getEnunciado() {
@@ -23,11 +23,11 @@ public class Pregunta {
         this.enunciado = enunciado;
     }
 
-    public String getTipo_dato() {
-        return tipo_dato;
+    public String getTipoDato() {
+        return tipoDato;
     }
-    public void setTipo_dato(String tipo_dato) {
-        this.tipo_dato = tipo_dato;
+    public void setTipoDato(String tipoDato) {
+        this.tipoDato = tipoDato;
     }
 
     public Seccion getSeccion() {

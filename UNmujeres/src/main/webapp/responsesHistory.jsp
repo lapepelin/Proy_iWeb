@@ -55,6 +55,7 @@
                 <table class="table table-bordered" id="tablaDrafts" width="100%" cellspacing="0">
                   <thead>
                   <tr>
+                    <th># de registro</th>
                     <th >ID de formulario</th>
                     <th>Nombre</th>
                     <th>Fecha de creación</th>
@@ -68,6 +69,7 @@
                       for (Map<String, Object> item: drafts) {
                   %>
                   <tr>
+                    <td style="width: 90px;"><%= item.get("id_registro") %></td>
                     <td><%= item.get("id_formulario") %></td>
                     <td><%= item.get("nombre_formulario") %></td>
                     <td><%= item.get("fecha_registro") %></td>
@@ -104,7 +106,7 @@
                 <table class="table table-bordered" id="tablaRecords" width="100%" cellspacing="0">
                   <thead>
                   <tr>
-                    <th>ID de registro</th>
+                    <th># de registro</th>
                     <th>ID de formulario</th>
                     <th>Nombre de formulario</th>
                     <th>Fecha de registro</th>
@@ -116,7 +118,7 @@
                       for (Map<String, Object> item: records) {
                   %>
                   <tr>
-                    <td style="width: 100px;"><%= item.get("id_registro") %></td>
+                    <td style="width: 90px;"><%= item.get("id_registro") %></td>
                     <td><%= item.get("id_formulario") %></td>
                     <td><%= item.get("nombre_formulario") %></td>
                     <td><%= item.get("fecha_registro") %></td>

@@ -33,32 +33,25 @@
   </div>
 
   <!-- Save Form Modal-->
-  <div class="modal fade" id="SaveFormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  <div class="modal fade" id="SaveRegModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
        aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="saveModal">Guardar como borrador</h5>
+          <h5 class="modal-title" id="saveModal">Guardar y enviar</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">Los cambios se guardarán como borrador y podrás acceder a ellos desde Resumen. También puedes descartar esta respuesta</div>
+        <div class="modal-body">Los cambios se guardarán y enviarán. No podrás editar este registro luego.</div>
         <div class="modal-footer">
 
-          <a href="indexEnc.html" class="btn btn-secondary btn-icon-split">
-                          <span class="icon text-white-50">
-                              <i class="fas fa-save"></i>
-                          </span>
-            <span class="text">Añadir como borrador</span>
-          </a>
-
-          <a href="indexEnc.html" class="btn btn-danger btn-icon-split">
-                          <span class="icon text-white-50">
-                              <i class="fas fa-trash"></i>
-                          </span>
-            <span class="text">Descartar y salir</span>
-          </a>
+          <button type="button" id="confirmSubmit" class="btn btn-secondary btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-save"></i>
+                        </span>
+            <span class="text">Confirmar</span>
+          </button>
 
           <button class="btn btn-info" type="button" data-dismiss="modal">Seguir aquí</button>
         </div>
@@ -81,3 +74,14 @@
 <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
 <script src="js/demo/datatables-demo.js"></script>
+<script>
+  // Evento para el botón de confirmación en el modal.
+  document.getElementById("confirmSubmit").addEventListener("click", function(){
+    var inputAccion = document.createElement("input");
+    inputAccion.type = "hidden";
+    inputAccion.name = "accion";
+    inputAccion.value = "completado";
+    document.getElementById("respuestaForm").appendChild(inputAccion);
+    document.getElementById("respuestaForm").submit();
+  });
+</script>
