@@ -5,9 +5,6 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
 -- Schema iweb_proy
 -- -----------------------------------------------------
 
@@ -196,13 +193,13 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `iweb_proy`.`opciones_pregunta`
+-- Table `iweb_proy`.`opcion_pregunta`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `iweb_proy`.`opciones_pregunta` (
-  `idopciones_pregunta` INT NOT NULL,
-  `opciones` JSON NULL DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `iweb_proy`.`opcion_pregunta` (
+  `idopcion_pregunta` INT NOT NULL,
+  `opcion` VARCHAR(30) NULL DEFAULT NULL,
   `idpregunta` INT NOT NULL,
-  PRIMARY KEY (`idopciones_pregunta`),
+  PRIMARY KEY (`idopcion_pregunta`),
   INDEX `fk_opciones_pregunta_pregunta1_idx` (`idpregunta` ASC) VISIBLE,
   CONSTRAINT `fk_opciones_pregunta_pregunta1`
     FOREIGN KEY (`idpregunta`)

@@ -134,14 +134,14 @@ INSERT INTO pregunta (idpregunta, enunciado, tipo_dato, idseccion) VALUES
 (13, 'pregunta2_2', 'combobox', 6),
 (14, 'pregunta1_2', 'combobox', 7),
 (15, 'pregunta2_2', DEFAULT, 7),
-(16, 'pregunta2_2', DEFAULT, 7),
+(16, 'pregunta3_2', DEFAULT, 7),
 -- form 3
 (17, 'pregunta1_3', 'combobox', 8),
 (18, 'pregunta2_3', DEFAULT, 8),
 (19, 'pregunta1_3', 'int', 9),
 (20, 'pregunta2_3', DEFAULT, 9),
 (21, 'pregunta1_3', 'date', 10),
-(22, 'pregunta2_1', DEFAULT, 10),
+(22, 'pregunta2_3', DEFAULT, 10), --
 -- form 4
 (23, 'pregunta1_4', DEFAULT, 11),
 (24, 'pregunta2_4', DEFAULT, 12),
@@ -153,45 +153,52 @@ INSERT INTO pregunta (idpregunta, enunciado, tipo_dato, idseccion) VALUES
 (29, 'pregunta1_5', 'combobox', 12),
 (30, 'pregunta2_5', 'int', 12);
 
-INSERT INTO opciones_pregunta (idopciones_pregunta,opciones,idpregunta) VALUES
-(1, NULL, 5),
-(2, NULL, 13),
-(3, NULL, 14),
-(4, NULL, 17),
-(5, NULL, 25),
-(6, NULL, 29);
+INSERT INTO opcion_pregunta (idopcion_pregunta,opcion,idpregunta) VALUES
+(1, 'opcion1_p5', 5),
+(2, 'opcion2_p5', 5),
+(3, 'opcion3_p5', 5),
+(4, 'opcion1_p8', 8),
+(5, 'opcion2_p8', 8),
+(6, 'opcion3_p8', 8),
+(7, 'opcion1_p13', 13),
+(8, 'opcion2_p13', 13),
+(9, 'opcion1_p14', 14),
+(10, 'opcion2_p14', 14),
+(11, 'opcion1_p17', 17),
+(12, 'opcion1_p25', 25),
+(13, 'opcion1_p29', 29);
 
 
 INSERT INTO respuesta (idrespuesta,respuesta,idpregunta,idregistro_respuestas) VALUES
 -- form 1 con 3 registros
 (1, 'f1_in1_respuesta1', 1, 1),		-- borrador de enc 7
-(2, 'f1_in1_respuesta2', 2, 1),
+(2, 2025-01-07, 2, 1), -- 'f1_in1_respuesta2'  tipo date
 (3, 'f1_in1_respuesta3', 3, 1),
 (4, 'f1_in1_respuesta4', 4, 1),
-(5, 'f1_in1_respuesta5', 5, 1),
-(6, 'f1_in1_respuesta6', 6, 1),
+(5, 'opcion1_p5', 5, 1), -- 'f1_in1_respuesta5' tipo combobox
+(6, 116, 6, 1), -- 'f1_in1_respuesta6' tipo int
 (7, 'f1_in1_respuesta7', 7, 1),
--- (8, 'f1_in1_respuesta8', 8, 1),	-- comentado para simular respuesta vacia a esta pregunta 
--- (9, 'f1_in1_respuesta9', 9, 1),	-- respuesta vacia
+(8, null, 8, 1), -- (8, 'f1_in1_respuesta8', 8, 1),	tipo combobox 
+(9, null, 9, 1), -- (9, 'f1_in1_respuesta9', 9, 1),	-- respuesta vacia
 
 (10, 'f1_in2_respuesta1', 1, 2),		-- borrador de enc 7
-(11, 'f1_in2_respuesta2', 2, 2),
+(11, 2025-02-07, 2, 2), -- 'f1_in2_respuesta2' tipo date
 (12, 'f1_in2_respuesta3', 3, 2),
 (13, 'f1_in2_respuesta4', 4, 2),
--- (14, 'f1_in2_respuesta5', 5, 2), -- respuesta vacia
--- (15, 'f1_in2_respuesta6', 6, 2), -- respuesta vacia
+(14, null, 5, 2), -- (14, 'f1_in2_respuesta5', 5, 2),  tipo combobox
+(15, null, 6, 2), -- (15, 'f1_in2_respuesta6', 6, 2),  tipo int 
 (16, 'f1_in2_respuesta7', 7, 2),
--- (17, 'f1_in2_respuesta8', 8, 2),	-- respuesta vacia
+(17, null, 8, 2), -- (17, 'f1_in2_respuesta8', 8, 2),  tipo combobox
 (18, 'f1_in2_respuesta9', 9, 2),
 
 (19, 'f1_in3_respuesta1', 1, 11),		-- completado de enc 9
-(20, 'f1_in3_respuesta2', 2, 11),
+(20, 2025-01-09, 2, 11), -- 'f1_in3_respuesta2' tipo date
 (21, 'f1_in3_respuesta3', 3, 11),
 (22, 'f1_in3_respuesta4', 4, 11),
-(23, 'f1_in3_respuesta5', 5, 11),
-(24, 'f1_in3_respuesta6', 6, 11),
+(23, 'opcion1_p5', 5, 11), -- tipo combobox
+(24, 136, 6, 11), -- 'f1_in3_respuesta6'  tipo int
 (25, 'f1_in3_respuesta7', 7, 11),
-(26, 'f1_in3_respuesta8', 8, 11),
+(26, 'opcion1_p8', 8, 11), --  tipo combobox
 (27, 'f1_in3_respuesta9', 9, 11),
 -- form 2 con 4 registros
 (28, 'f2_in1_respuesta1', 10, 3),		-- completado de enc 7
