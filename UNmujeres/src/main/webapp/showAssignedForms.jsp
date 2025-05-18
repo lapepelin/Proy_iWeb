@@ -8,7 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="com.example.unmujeres.beans.Formulario" %>
 <%
     ArrayList<Map<String, Object>> datos = (ArrayList<Map<String, Object>>) request.getAttribute("datos");
 %>
@@ -50,15 +49,16 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" id="tablaAsig" width="100%" cellspacing="0">
                                     <thead>
                                     <tr>
-                                        <th>ID de formulario</th>
+                                        <th >ID de formulario</th>
                                         <th>Nombre</th>
                                         <th>Respuestas registradas</th>
                                         <th>Respuestas esperadas</th>
-                                        <th>Fecha de asignación (YYYY-MM-DD)</th>
-                                        <th>Fecha límite (YYYY-MM-DD)</th>
+                                        <th>Fecha de asignación</th>
+                                        <th>Fecha límite</th>
+                                        <th>Acciones</th>
                                     </tr>
                                     </thead>
 
@@ -68,14 +68,14 @@
                                             for (Map<String, Object> item: datos) {
                                     %>
                                     <tr>
-                                        <td><%= item.get("id_formulario") %></td>
+                                        <td style="width: 100px;"><%= item.get("id_formulario") %></td>
                                         <td><%= item.get("nombre_formulario") %></td>
-                                        <td><%= item.get("registros_comletados") %></td>
+                                        <td><%= item.get("registros_completados") %></td>
                                         <td><%= item.get("registros_esperados") %></td>
                                         <td><%= item.get("fecha_asignacion") %></td>
                                         <td><%= item.get("fecha_limite") %></td>
 
-                                        <td><a href="<%=request.getContextPath()%>/ServletA?action=regCrear&id=<%= item.get("id_formulario") %>">Crear Registro</a></td>
+                                        <td><a class="btn btn-success" href="<%=request.getContextPath()%>/ServletA?action=regCrear&id=<%= item.get("id_formulario") %>">Crear Registro</a></td>
                                     </tr>
                                     <%
                                             }
@@ -88,7 +88,6 @@
                                     <%
                                         }
                                     %>
-
                                     </tbody>
                                 </table>
                             </div>
@@ -116,7 +115,6 @@
 
     </div>
     <!-- End of Page Wrapper -->
-
-<jsp:include page="footer.jsp" />
+    <jsp:include page="footer.jsp" />
 </body>
 </html>

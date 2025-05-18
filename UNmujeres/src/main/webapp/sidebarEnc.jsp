@@ -45,7 +45,7 @@
 
   <!-- Nav Item - Ver Forms Asignados -->
   <li class="nav-item ${pageAct eq 'asignados' ? 'active' : ''}">
-    <a class="nav-link" href="showAssignedForms.jsp">
+    <a class="nav-link" href="ServletA?action=lista">
       <i class="fas fa-fw fa-table"></i>
       <span>Formularios Asignados</span></a>
   </li>
@@ -61,8 +61,8 @@
          data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Seleccione:</h6>
-        <a class="collapse-item" href="historicForms.html#completadosSection">Completados</a>
-        <a class="collapse-item" href="historicForms.html#borradoresSection">Borradores</a>
+        <a class="collapse-item" href="ServletA?action=historial#completadosSection">Completados</a>
+        <a class="collapse-item" href="ServletA?action=historial#borradoresSection">Borradores</a>
       </div>
     </div>
   </li>

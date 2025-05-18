@@ -1,40 +1,31 @@
-package com.example.onu.beans;
+package com.example.unmujeres.beans;
 
 public class Seccion {
-    private int idseccion;
-    private String nombre_sec; // nombre_sec tal como en la base de datos
-    private int formulario_idformulario;
-    //-------------------------------------------------
+    private int idSeccion;
+    private String nombreSec; // nombreSec tal como en la base de datos
+    private Formulario formulario;
+
     public Seccion() {}
-    //-------------------------------------------------
-    public Seccion(int idseccion, String nombre_sec, int formulario_idformulario) {
-        this.idseccion = idseccion;
-        this.nombre_sec = nombre_sec;
-        this.formulario_idformulario = formulario_idformulario;
+
+    public int getIdSeccion() {
+        return idSeccion;
     }
-    //-------------------------------------------------
-    public int getIdseccion() {
-        return idseccion;
+    public void setIdSeccion(int idSeccion) {
+        this.idSeccion = idSeccion;
     }
 
-    public void setIdseccion(int idseccion) {
-        this.idseccion = idseccion;
+    public String getNombreSec() {
+        return nombreSec;
     }
-    //-------------------------------------------------
-    public String getNombre_sec() {
-        return nombre_sec;
-    }
-
-    public void setNombre_sec(String nombre_sec) {
-        this.nombre_sec = nombre_sec;
-    }
-    //-------------------------------------------------
-    public int getFormulario_idformulario() {
-        return formulario_idformulario;
+    public void setNombreSec(String nombreSec) {
+        this.nombreSec = nombreSec;
     }
 
-    public void setFormulario_idformulario(int formulario_idformulario) {
-        this.formulario_idformulario = formulario_idformulario;
+    public Formulario getFormulario() {
+        return formulario;
+    }
+    public void setFormulario(Formulario formulario) {
+        this.formulario = formulario;
     }
 }
 

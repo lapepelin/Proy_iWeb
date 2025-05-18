@@ -11,25 +11,7 @@ public class Formulario {
     private Date fechaLimite;
     private boolean estado;
     private int registrosEsperados;
-    private int idCategoria;
-    //Categoria categoria;
-    //
-    //private int registrosCompletados;
-    //private Date fechaAsignacion;
-
-    //
-    public Formulario(int idFormulario, String nombre, Date fechaCreacion, Date fechaLimite, boolean estado, int registrosEsperados, int idCategoria, int registrosCompletados, Date fechaAsignacion) {
-        this.idFormulario = idFormulario;
-        this.nombre = nombre;
-        this.fechaCreacion = fechaCreacion;
-        this.fechaLimite = fechaLimite;
-        this.estado = estado;
-        this.registrosEsperados = registrosEsperados;
-        this.idCategoria = idCategoria;
-        //this.categoria = categoria;
-        //this.registrosCompletados = registrosCompletados;
-        //this.fechaAsignacion = fechaAsignacion;
-    }
+    Categoria categoria;
 
     public Formulario(){
     }
@@ -76,30 +58,11 @@ public class Formulario {
         this.estado = estado;
     }
 
-//    public Categoria getCategoria() {
-//        return categoria;
-//    }
-//    public void setCategoria(Categoria categoria) {
-//        this.categoria = categoria;
-//    }
-    public int getIdCategoria() {
-        return idCategoria;
+    public Categoria getCategoria() {
+        return categoria;
     }
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
-//    public int getRegistrosCompletados() {
-//        return registrosCompletados;
-//    }
-//    public void setRegistrosCompletados(int registrosCompletados) {
-//        this.registrosCompletados = registrosCompletados;
-//    }
-//
-//    public Date getFechaAsignacion() {
-//        return fechaAsignacion;
-//    }
-//    public void setFechaAsignacion(Date fechaAsignacion) {
-//        this.fechaAsignacion = fechaAsignacion;
-//    }
 }

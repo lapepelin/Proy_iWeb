@@ -11,22 +11,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class EncHasFormularioDAO {
-
-    private static final String URL = "jdbc:mysql://localhost:3306/iweb_proy";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
+public class EncHasFormularioDAO extends BaseDAO {
 
     public ArrayList<EncHasFormulario> getByEncuestador(int idEnc) {
         ArrayList<EncHasFormulario> asignaciones = new ArrayList<>();
 
         String sql = "SELECT * FROM enc_has_formulario WHERE enc_idusuario = ?";
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-            PreparedStatement ps = con.prepareStatement(sql);
-
+        try (Connection con = this.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql);) {
             ps.setInt(1, idEnc);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -48,7 +41,7 @@ public class EncHasFormularioDAO {
                     asignaciones.add(a);
                 }
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -60,10 +53,8 @@ public class EncHasFormularioDAO {
         EncHasFormulario asig = null;
         String sql = "SELECT * FROM enc_has_formulario WHERE idenc_has_formulario = ?";
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-            PreparedStatement ps = con.prepareStatement(sql);
+        try (Connection con = this.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);) {
 
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -81,9 +72,13 @@ public class EncHasFormularioDAO {
                     asig.setUsuario(usuarioDAO.getById(rs.getInt("enc_idusuario")));
                 }
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return asig;
     }
+
+//    public EncHasFormulario> getByEhf(int idEnc) {
+//
+//    }
 }

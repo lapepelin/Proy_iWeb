@@ -7,26 +7,15 @@ import com.example.unmujeres.beans.Formulario;
 import com.example.unmujeres.beans.RegistroRespuestas;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+public class FormularioDAO extends BaseDAO {
 
 
-
-
-
-
-
-public class FormularioDAO {
-
-    private static final String URL = "jdbc:mysql://localhost:3306/iweb_proy";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
-
-    public ArrayList<Formulario> listarFormulariosAsignados(int encIdUsuario) {
-        ArrayList<Formulario> formsAsignados = new ArrayList<>();
+    public ArrayList<EncHasFormulario> listarFormulariosAsignados(int encIdUsuario) {
+        ArrayList<EncHasFormulario> Asignacion = new ArrayList<>();
 
         String sql = "SELECT " +
                 "    f.idformulario, " +
@@ -50,32 +39,36 @@ public class FormularioDAO {
                 "    ehf.fecha_asignacion, " +
                 "    ehf.idenc_has_formulario";
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-            PreparedStatement ps = con.prepareStatement(sql);
+        try (Connection con = this.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);) {
 
             ps.setInt(1, encIdUsuario);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Formulario fa = new Formulario();
-                    EncHasFormulario asig = new EncHasFormulario();
-                    RegistroRespuestas reg = new RegistroRespuestas();
-
-                    fa.setIdFormulario(rs.getInt("idformulario"));
+                    fa.setIdFormulario(rs.getInt("f.idformulario"));
+                    System.out.println("Se consulta el formulario: " + fa.getIdFormulario() + fa.getNombre() );
                     fa.setNombre(rs.getString("nombre"));
                     fa.setRegistrosEsperados(rs.getInt("registros_esperados"));
-                    //reg.setRegistrosCompletados(rs.getInt("registros_completados"));
-                    asig.setFechaAsignacion(rs.getDate("fecha_asignacion"));
                     fa.setFechaLimite(rs.getDate("fecha_limite"));
-                    formsAsignados.add(fa);
+
+                    EncHasFormulario asig = new EncHasFormulario();
+                    asig.setIdEncHasFormulario(rs.getInt("idenc_has_formulario"));
+                    asig.setFechaAsignacion(rs.getDate("fecha_asignacion"));
+                    asig.setFormulario(fa);
+
+                    RegistroRespuestas reg = new RegistroRespuestas();
+                    reg.setIdRegistroRespuestas(rs.getInt("reg.idregistro_respuestas"));
+                    reg.setEncHasFormulario(asig);
+
+                    Asignacion.add(asig);
                 }
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return formsAsignados;
+        return Asignacion;
     }
 
 
@@ -83,12 +76,10 @@ public class FormularioDAO {
         Formulario formulario = null;
         String sql = "SELECT * FROM formulario WHERE idformulario = ?";
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-            PreparedStatement ps = con.prepareStatement(sql);
-
+        try (Connection con = this.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);){
             ps.setInt(1, id);
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     formulario = new Formulario();
@@ -98,10 +89,9 @@ public class FormularioDAO {
                     formulario.setFechaLimite(rs.getDate("fecha_limite"));
                     formulario.setEstado(rs.getBoolean("estado"));
                     formulario.setRegistrosEsperados(rs.getInt("registros_esperados"));
-
                 }
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return formulario;

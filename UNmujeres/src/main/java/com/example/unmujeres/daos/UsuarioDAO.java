@@ -28,7 +28,7 @@ public class UsuarioDAO {
                     usuario.setIdUsuario(rs.getInt("idusuario"));
                     usuario.setNombres(rs.getString("nombres"));
                     usuario.setApellidos(rs.getString("apellidos"));
-                    usuario.setFechaIncorporacion(rs.getDate("fecha_limite"));
+                    usuario.setFechaIncorporacion(rs.getDate("fecha_incorporacion"));
                     usuario.setEstado(rs.getBoolean("estado"));
 
                 }

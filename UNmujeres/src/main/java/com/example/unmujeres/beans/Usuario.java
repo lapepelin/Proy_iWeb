@@ -7,7 +7,7 @@ public class Usuario {
     private String nombres;
     private String apellidos;
     private String contraseña;
-    private int charDNI;
+    private int DNI;
     private String correo;
     private String direccion;
     private boolean estado;
@@ -16,10 +16,10 @@ public class Usuario {
     private int iddistritos;
     private Date fechaIncorporacion;
     private byte[] foto;
-    private String cod_enc;
+    private String codEnc;
 
-    public Usuario(String cod_enc, byte[] foto, Date fechaIncorporacion, int iddistritos, int idUsuario, int idroles, boolean estado, int idzona, String direccion, int charDNI, String correo, String contraseña, String apellidos, String nombres) {
-        this.cod_enc = cod_enc;
+    public Usuario(String codEnc, byte[] foto, Date fechaIncorporacion, int iddistritos, int idUsuario, int idroles, boolean estado, int idzona, String direccion, int DNI, String correo, String contraseña, String apellidos, String nombres) {
+        this.codEnc = codEnc;
         this.foto = foto;
         this.fechaIncorporacion = fechaIncorporacion;
         this.iddistritos = iddistritos;
@@ -28,7 +28,7 @@ public class Usuario {
         this.estado = estado;
         this.idzona = idzona;
         this.direccion = direccion;
-        this.charDNI = charDNI;
+        this.DNI = DNI;
         this.correo = correo;
         this.contraseña = contraseña;
         this.apellidos = apellidos;
@@ -65,11 +65,11 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
-    public int getCharDNI() {
-        return charDNI;
+    public int getDNI() {
+        return DNI;
     }
-    public void setCharDNI(int charDNI) {
-        this.charDNI = charDNI;
+    public void setDNI(int DNI) {
+        this.DNI = DNI;
     }
 
     public String getCorreo() {
@@ -128,10 +128,10 @@ public class Usuario {
         this.foto = foto;
     }
 
-    public String getCod_enc() {
-        return cod_enc;
+    public String getCodEnc() {
+        return codEnc;
     }
-    public void setCod_enc(String cod_enc) {
-        this.cod_enc = cod_enc;
+    public void setCodEnc(String codEnc) {
+        this.codEnc = codEnc;
     }
 }

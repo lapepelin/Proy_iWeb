@@ -38,45 +38,66 @@ public class VerFormulariosServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action") == null ? "lista" : request.getParameter("action");
-        FormularioDAO formsAsig = new FormularioDAO();
+        int idEnc = 7;
+
+        EncHasFormularioDAO ehfDAO = new EncHasFormularioDAO();
+        RegistroRespuestasDAO registroDAO = new RegistroRespuestasDAO();
+        FormularioDAO formularioDAO = new FormularioDAO();
         RequestDispatcher view;
 
         switch (action) {
 
-            case "lista":
-                int idEnc = 7;  //Integer.parseInt(request.getParameter("id"));
+            case "lista2":
 
                 try {
-                    // 1. Obtener DAOs
-                    EncHasFormularioDAO ehfDAO = new EncHasFormularioDAO();
-                    RegistroRespuestasDAO registroDAO = new RegistroRespuestasDAO();
-                    FormularioDAO formularioDAO = new FormularioDAO();
+                    System.out.println("Se consulto lista de asignados metodo 2");
+                    //FormularioDAO formularioDAO = new FormularioDAO();
 
-                    // 2. Obtener asignaciones
-                    ArrayList<EncHasFormulario> asignaciones = ehfDAO.getByEncuestador(idEnc); // ID hardcodeado
+                    ArrayList<EncHasFormulario> data = formularioDAO.listarFormulariosAsignados(idEnc);
 
-                    // 3. Estructura para vista
+                    request.setAttribute("datos", data);
+                    view = request.getRequestDispatcher("/showAssignedForms.jsp");
+                    view.forward(request, response);
+
+                } catch (ServletException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+
+            case "lista":
+                //int idEnc = 7;
+                try {
+                    System.out.println("Se consulto lista de asignados metodo 1");
+
+                    // 2. Inicializa arreglo de datos para vista
                     ArrayList<Map<String, Object>> datos = new ArrayList<>();
 
+                    // 3. Obtener arreglo de asignaciones
+                    ArrayList<EncHasFormulario> asignaciones = ehfDAO.getByEncuestador(idEnc); // ID hardcodeado
+                    //  para cada asignacion
                     for (EncHasFormulario asignacion : asignaciones) {
-                        // 4. Obtener formulario relacionado
+                        //System.out.println("\n1. Asignacion extraída: " + asignacion.getIdEncHasFormulario());
+                        // 4. Obtener formulario relacionado por el id, obtenido de la asignacion
                         Formulario formulario = formularioDAO.getById(asignacion.getFormulario().getIdFormulario());
-
-                        if (formulario != null && formulario.isEstado() == true) {
+                        // si existe formulario y esta activo (formulario.estado=1),
+                        if (formulario != null && formulario.isEstado()) {
+                            //System.out.println("2. Formulario de asignacion existe y activo: " + formulario.getIdFormulario());
+                            // inicializa un item para agregar a datos
                             Map<String, Object> item = new LinkedHashMap<>();
-
-                            // 5. Datos formulario
+                            // 5. Informacion de formulario
                             item.put("id_formulario", formulario.getIdFormulario());
                             item.put("nombre_formulario", formulario.getNombre());
                             item.put("fecha_limite", formulario.getFechaLimite());
-                            item.put("registros esperado", formulario.getRegistrosEsperados());
+                            item.put("registros_esperados", formulario.getRegistrosEsperados());
 
                             // 7. Datos asignacion ehf
                             item.put("fecha_asignacion", asignacion.getFechaAsignacion());
+                            //System.out.println("3. Fecha de asignacion: " + asignacion.getFechaAsignacion());
 
-                            // 8. Datos registro
+                            // 8. Datos registro, arreglo de registros en asignacion
                             ArrayList<RegistroRespuestas> registros = registroDAO.getByEhf(asignacion.getIdEncHasFormulario());
-                            item.put("registros completados", registros.size());
+                            item.put("registros_completados", registros.size());
+                            //System.out.println("4. Cantidad registros completados: " + registros.size());
 
                             datos.add(item);
                         }
@@ -88,23 +109,105 @@ public class VerFormulariosServlet extends HttpServlet {
                     view.forward(request, response);
 
                 } catch (Exception e) {
-                    request.setAttribute("error", "Error: " + e.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/vistas/error.jsp").forward(request, response);
+                    e.printStackTrace();
+                    //request.getRequestDispatcher("/WEB-INF/vistas/error.jsp").forward(request, response);
                 }
-
                 break;
             case "formulario":
                 // Codigo de Oshin
                 break;
 
-            case "editar":
-                String idformulario = request.getParameter("id");
-                //Formulario form = FormularioDAO.
+            case "historial":
+                System.out.println("Se consulto historial");
+                //int idEnc = 7;
+                try {
+
+                    // 2. Inicializar arreglos de datos (borradores y completados)
+                    ArrayList<Map<String, Object>> datos1 = new ArrayList<>();
+                    ArrayList<Map<String, Object>> datos2 = new ArrayList<>();
+
+                    // 3. lista de borradores
+                    ArrayList<EncHasFormulario> asignaciones = ehfDAO.getByEncuestador(idEnc); // ID hardcodeado
+                    for (EncHasFormulario asignacion : asignaciones) {
+                        // 3.1. Informacion de registro, arreglo de registros en asignacion
+                        ArrayList<RegistroRespuestas> registros = registroDAO.getByEhf(asignacion.getIdEncHasFormulario());
+                        // 3.2. Obtener formulario relacionado por el id, obtenido de la asignacion
+                        Formulario formulario = formularioDAO.getById(asignacion.getFormulario().getIdFormulario());
+                        // para cada registro
+                        for (RegistroRespuestas registro : registros) {
+                            // 3.3. Validar estado de formulario y estado borrador de registro
+                            if (registro != null && registro.getEstado().charAt(0)=='B' && formulario != null && formulario.isEstado()) {
+                                // inicializa un item para agregar a datos
+                                Map<String, Object> item1 = new LinkedHashMap<>();
+                                // 3.5 Informacion de registro
+                                item1.put("fecha_registro", registro.getFechaRegistro());
+                                item1.put("id_registro", registro.getIdRegistroRespuestas()); // no se mostrara en vista, pero se usara para editar o descartar
+
+                                // 3.4. Informacion de formulario
+                                item1.put("id_formulario", formulario.getIdFormulario());
+                                item1.put("nombre_formulario", formulario.getNombre());
+                                item1.put("fecha_limite", formulario.getFechaLimite());
+
+                                datos1.add(item1);
+                            } else if (registro != null && registro.getEstado().charAt(0)=='C' && formulario != null && formulario.isEstado()) {
+                                // inicializa un item para agregar a datos
+                                Map<String, Object> item2 = new LinkedHashMap<>();
+                                // 3.5 Informacion de registro
+                                item2.put("fecha_registro", registro.getFechaRegistro());
+                                item2.put("id_registro", registro.getIdRegistroRespuestas()); // se deberia mstrar?
+
+                                // 3.4. Informacion de formulario
+                                item2.put("id_formulario", formulario.getIdFormulario());
+                                item2.put("nombre_formulario", formulario.getNombre());
+                                datos2.add(item2);
+                            }
+                        }
+                        // 9. Pasar a vista
+                        request.setAttribute("drafts", datos1);
+                        request.setAttribute("records", datos2);
+                    }
+
+                    // 4. lista de completados
+
+                    // unir con anterior for?
+
+                    view = request.getRequestDispatcher("/responsesHistory.jsp");
+                    view.forward(request, response);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
 
+            case "editar":
+                int idReg = Integer.parseInt(request.getParameter("id"));
+
+                RegistroRespuestas registro = registroDAO.getById(idReg);
+
+                if (registro == null) {
+                    response.sendRedirect(request.getContextPath() + "/VerFormulariosServlet");
+                } else {
+                    request.setAttribute("registro", registro);
+                    view = request.getRequestDispatcher("/2");
+                    view.forward(request, response);
+                }
+                break;
+
+            case "descartar":
+                int IdReg = Integer.parseInt(request.getParameter("id"));
+
+                try {
+
+                    if(registroDAO.getById(IdReg) != null){
+                        registroDAO.delete(IdReg);
+                    }
+                    response.sendRedirect(request.getContextPath()+"/VerFormulariosServlet");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
         }
-
-
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
     }
