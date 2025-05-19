@@ -46,9 +46,9 @@
         <div class="modal-body">Los cambios se guardarán y enviarán. No podrás editar este registro luego.</div>
         <div class="modal-footer">
 
-          <button type="button" id="confirmSubmit" class="btn btn-secondary btn-icon-split">
+          <button type="button" id="confirmSubmit" class="btn btn-success btn-icon-split">
                         <span class="icon text-white-50">
-                            <i class="fas fa-save"></i>
+                            <i class="fas fa-check"></i>
                         </span>
             <span class="text">Confirmar</span>
           </button>
@@ -77,9 +77,10 @@
 <script>
   // Evento para el botón de confirmación en el modal.
   document.getElementById("confirmSubmit").addEventListener("click", function(){
+    console.log("Confirmación en el modal. Se enviará el formulario con acción 'completado'.");
     var inputAccion = document.createElement("input");
     inputAccion.type = "hidden";
-    inputAccion.name = "accion";
+    inputAccion.name = "acto";
     inputAccion.value = "completado";
     document.getElementById("respuestaForm").appendChild(inputAccion);
     document.getElementById("respuestaForm").submit();

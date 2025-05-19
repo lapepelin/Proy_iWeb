@@ -49,7 +49,7 @@
                             // Variable para controlar el cambio de sección.
                             int currentSeccionId = -1;
                     %>
-                        <form method="POST" action="<%=request.getContextPath()%>/Servlet?action=editar">
+                        <form id="respuestaForm" method="POST" action="<%=request.getContextPath()%>/VerFormulariosServlet?action=editar">
                         <!-- Campo hidden para el id del registro de respuestas -->
                         <input type="hidden" name="idregistro_respuestas" value="<%= registro.getIdRegistroRespuestas() %>" />
                     <%
@@ -103,7 +103,7 @@
                                                                             selected = "selected";
                                                                         }
                                                         %>
-                                                        <option value="<%= opcion.getIdOpcionPregunta() %>" <%= selected %>>
+                                                        <option value="<%= opcion.getOpcion() %>" <%= selected %>>
                                                             <%= opcion.getOpcion() %>
                                                         </option>
                                                         <%
@@ -115,9 +115,9 @@
                                                     <%
                                                     } else {
                                                         String inputType = "text";
-                                                        if ("numero".equalsIgnoreCase(pregunta.getTipoDato())) {
+                                                        if ("int".equalsIgnoreCase(pregunta.getTipoDato())) {
                                                             inputType = "number";
-                                                        } else if ("fecha".equalsIgnoreCase(pregunta.getTipoDato())) {
+                                                        } else if ("date".equalsIgnoreCase(pregunta.getTipoDato())) {
                                                             inputType = "date";
                                                         }
                                                     %>
@@ -178,7 +178,7 @@
                         </span>
                     <span class="text">Registrar Respuesta</span>
                 </button>
-                <button type="submit" name="acto" value="borrador" class="btn btn-secondary btn-icon-split mr-2">
+                <button type="submit" name="acto" value="borrador" form="respuestaForm" class="btn btn-secondary btn-icon-split mr-2">
                         <span class="icon text-white-50">
                             <i class="fas fa-save"></i>
                         </span>

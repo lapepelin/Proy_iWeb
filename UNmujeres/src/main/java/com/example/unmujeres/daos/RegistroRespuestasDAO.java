@@ -19,10 +19,9 @@ public class RegistroRespuestasDAO extends BaseDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+
                     RegistroRespuestas reg = new RegistroRespuestas();
 
-                    reg.setIdRegistroRespuestas(rs.getInt("idregistro_respuestas"));
-                    reg.setFechaRegistro(rs.getDate("fecha_registro"));
                     reg.setEstado(rs.getString("estado"));
 
                     // Obtener asignacion por id
@@ -88,8 +87,9 @@ public class RegistroRespuestasDAO extends BaseDAO {
         try (Connection con = this.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);){
 
-            ps.setInt(1, id);
-            ps.setString(2, estado);
+            ps.setString(1, estado);
+            ps.setInt(2, id);
+
             ps.executeUpdate();
 
         } catch (SQLException e) {

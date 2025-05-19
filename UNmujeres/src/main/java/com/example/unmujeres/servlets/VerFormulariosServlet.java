@@ -214,6 +214,7 @@ public class VerFormulariosServlet extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action") == null ? "lista" : request.getParameter("action");
+        System.out.println("se hace: " +action);
         RequestDispatcher view;
 
         switch (action) {
@@ -222,6 +223,7 @@ public class VerFormulariosServlet extends HttpServlet {
                 break;
             case "editar":
                 String acto = request.getParameter("acto");
+
                 String nuevoEstado;
                 if (Objects.equals(acto, "borrador")) {
                     nuevoEstado = "B";
@@ -232,8 +234,9 @@ public class VerFormulariosServlet extends HttpServlet {
                     nuevoEstado = "B";
                 }
 
-                int idReg = Integer.parseInt(request.getParameter("idregistro"));
+                int idReg = Integer.parseInt(request.getParameter("idregistro_respuestas"));
                 registroDAO.updateState(idReg,nuevoEstado);
+                System.out.println("Se ha actualizado el registro con id: " + idReg + "al estado: " + nuevoEstado + " en" + nuevoEstado.getClass().getSimpleName());
 
                 Map<String, String[]> parametroMap = request.getParameterMap();
                 // Itera sobre los parámetros para identificar elementos que comiencen con "respuesta_"
@@ -251,15 +254,15 @@ public class VerFormulariosServlet extends HttpServlet {
                             // Actualiza la respuesta para esa pregunta en el registro de respuestas
                             respuestaDAO.updateResponse(idReg, idPregunta, nuevaRespuesta);
 
+                            System.out.println("Se actualizo una respuesta con id: " + idPregunta + "con el texto: " + nuevaRespuesta);
+
                         } catch (NumberFormatException e) {
                             System.err.println("ID de pregunta inválido en el parámetro: " + paramName);
                         }
                     }
                 }
 
-                String resp = request.getParameter("respuesta");
-
-                //ArrayList<Respuesta> respuestas = request.getParameter(resp);
+                response.sendRedirect(request.getContextPath() + "/VerFormulariosServlet?action=historial");
 
                 break;
         }

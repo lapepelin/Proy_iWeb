@@ -70,8 +70,14 @@
                                         <td><%= item.get("nombre_formulario") %></td>
                                         <td><%= item.get("registros_completados") %></td>
                                         <td><%= item.get("registros_esperados") %></td>
-                                        <td><%= item.get("fecha_asignacion") %></td>
-                                        <td><%= item.get("fecha_limite") %></td>
+                                        <td>
+                                            <%= new java.text.SimpleDateFormat("dd-MM-yyyy")
+                                                    .format((java.util.Date) item.get("fecha_asignacion")) %>
+                                        </td>
+                                        <td>
+                                            <%= new java.text.SimpleDateFormat("dd-MM-yyyy")
+                                                    .format((java.util.Date) item.get("fecha_limite")) %>
+                                        </td>
 
                                         <td><a class="btn btn-success" href="<%=request.getContextPath()%>/ServletA?action=regCrear&id=<%= item.get("id_formulario") %>">Crear Registro</a></td>
                                     </tr>

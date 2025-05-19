@@ -72,8 +72,14 @@
                     <td style="width: 90px;"><%= item.get("id_registro") %></td>
                     <td><%= item.get("id_formulario") %></td>
                     <td><%= item.get("nombre_formulario") %></td>
-                    <td><%= item.get("fecha_registro") %></td>
-                    <td><%= item.get("fecha_limite") %></td>
+                    <td>
+                      <%= new java.text.SimpleDateFormat("dd-MM-yyyy")
+                              .format((java.util.Date) item.get("fecha_registro")) %>
+                    </td>
+                    <td>
+                      <%= new java.text.SimpleDateFormat("dd-MM-yyyy")
+                              .format((java.util.Date) item.get("fecha_limite")) %>
+                    </td>
                     <td>
                       <a class="btn btn-sm btn-info" href="<%=request.getContextPath()%>/ServletA?action=editar&id=<%=item.get("id_registro")%>">Editar</a>
                       <a class="btn btn-sm btn-warning" href="<%=request.getContextPath()%>/ServletA?action=descartar&id=<%=item.get("id_registro")%>">Descartar</a>
@@ -121,7 +127,10 @@
                     <td style="width: 90px;"><%= item.get("id_registro") %></td>
                     <td><%= item.get("id_formulario") %></td>
                     <td><%= item.get("nombre_formulario") %></td>
-                    <td><%= item.get("fecha_registro") %></td>
+                    <td>
+                      <%= new java.text.SimpleDateFormat("dd-MM-yyyy")
+                              .format((java.util.Date) item.get("fecha_registro")) %>
+                    </td>
                   </tr>
                   <%
                     }
