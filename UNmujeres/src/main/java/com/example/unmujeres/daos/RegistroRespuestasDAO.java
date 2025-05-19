@@ -11,7 +11,18 @@ public class RegistroRespuestasDAO extends BaseDAO {
     public ArrayList<RegistroRespuestas> getByEhf(int idEhf) {
         ArrayList<RegistroRespuestas> registros = new ArrayList<>();
 
-        String sql = "SELECT * FROM registro_respuestas reg INNER JOIN enc_has_formulario ehf ON reg.idenc_has_formulario = ehf.idenc_has_formulario WHERE ehf.idenc_has_formulario = ?";
+        String sql = "SELECT " +
+                "    reg.idregistro_respuestas, " +
+                "    reg.fecha_registro, " +
+                "    reg.estado, " +
+                "    ehf.idenc_has_formulario, " +
+                "    ehf.idformulario " +
+                "FROM " +
+                "    registro_respuestas reg " +
+                "INNER JOIN " +
+                "    enc_has_formulario ehf ON reg.idenc_has_formulario = ehf.idenc_has_formulario " +
+                "WHERE " +
+                "    ehf.idenc_has_formulario = ?";
 
         try (Connection con = this.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);) {
@@ -23,10 +34,13 @@ public class RegistroRespuestasDAO extends BaseDAO {
                     RegistroRespuestas reg = new RegistroRespuestas();
 
                     reg.setEstado(rs.getString("estado"));
+                    reg.setIdRegistroRespuestas(rs.getInt("idregistro_respuestas"));
+                    reg.setFechaRegistro(rs.getDate("fecha_registro"));
 
                     // Obtener asignacion por id
                     EncHasFormularioDAO encHasFormularioDAO = new EncHasFormularioDAO();
                     reg.setEncHasFormulario(encHasFormularioDAO.getById(idEhf));
+
 
                     registros.add(reg);
                 }
@@ -70,11 +84,20 @@ public class RegistroRespuestasDAO extends BaseDAO {
     public void delete(int id) {
         String sql = "DELETE FROM registro_respuestas WHERE idregistro_respuestas = ?";
 
-        try (Connection con = this.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);){
+        String delRespSQL = "DELETE FROM respuesta WHERE idregistro_respuestas = ?";
+        String delRegSQL = "DELETE FROM registro_respuestas WHERE idregistro_respuestas = ?";
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+        try (Connection con = this.getConnection();){
+
+            try (PreparedStatement ps = con.prepareStatement(delRespSQL)) {
+                ps.setInt(1, id);
+                ps.executeUpdate();
+            }
+
+            try (PreparedStatement ps = con.prepareStatement(delRegSQL)) {
+                ps.setInt(1, id);
+                ps.executeUpdate();
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();

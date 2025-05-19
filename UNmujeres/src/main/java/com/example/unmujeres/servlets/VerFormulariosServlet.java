@@ -7,10 +7,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.Objects;
+import java.util.*;
 
 @WebServlet(
         name = "VerFormulariosServlet",
@@ -126,14 +123,19 @@ public class VerFormulariosServlet extends HttpServlet {
                     // 3. lista de borradores
                     ArrayList<EncHasFormulario> asignaciones = ehfDAO.getByEncuestador(idEnc); // ID hardcodeado
                     for (EncHasFormulario asignacion : asignaciones) {
+                        System.out.println("Asignacion id es: "+asignacion.getIdEncHasFormulario());
+
                         // 3.1. Informacion de registro, arreglo de registros en asignacion
                         ArrayList<RegistroRespuestas> registros = registroDAO.getByEhf(asignacion.getIdEncHasFormulario());
                         // 3.2. Obtener formulario relacionado por el id, obtenido de la asignacion
                         Formulario formulario = formularioDAO.getById(asignacion.getFormulario().getIdFormulario());
+                        System.out.println("Form id es: "+formulario.getIdFormulario());
+
                         // para cada registro
                         for (RegistroRespuestas registro : registros) {
                             // 3.3. Validar estado de formulario y estado borrador de registro
                             if (registro != null && registro.getEstado().charAt(0)=='B' && formulario != null && formulario.isEstado()) {
+
                                 // inicializa un item para agregar a datos
                                 Map<String, Object> item1 = new LinkedHashMap<>();
                                 // 3.5 Informacion de registro
@@ -147,10 +149,14 @@ public class VerFormulariosServlet extends HttpServlet {
 
                                 datos1.add(item1);
                             } else if (registro != null && registro.getEstado().charAt(0)=='C' && formulario != null && formulario.isEstado()) {
+
                                 // inicializa un item para agregar a datos
                                 Map<String, Object> item2 = new LinkedHashMap<>();
                                 // 3.5 Informacion de registro
                                 item2.put("fecha_registro", registro.getFechaRegistro());
+
+                                Date fecha = registro.getFechaRegistro();
+
                                 item2.put("id_registro", registro.getIdRegistroRespuestas()); // se deberia mstrar?
 
                                 // 3.4. Informacion de formulario
@@ -197,9 +203,10 @@ public class VerFormulariosServlet extends HttpServlet {
                 try {
 
                     if(registroDAO.getById(IdReg) != null){
+                        System.out.println("Se eliminara el registro id: " + IdReg);
                         registroDAO.delete(IdReg);
                     }
-                    response.sendRedirect(request.getContextPath()+"/VerFormulariosServlet");
+                    response.sendRedirect(request.getContextPath()+"/VerFormulariosServlet?action=historial");
 
                 } catch (Exception e) {
                     e.printStackTrace();
