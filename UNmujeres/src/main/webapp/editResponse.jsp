@@ -160,17 +160,6 @@
             <!-- Botones de Acción -->
 
 
-<%--            <!-- Botones para guardar -->--%>
-<%--            <div class="btn-group text-center mt-4">--%>
-<%--                <a type="submit" name="accion" value="borrador" class="btn btn-secondary btn-icon-split">--%>
-<%--                    <span class="icon text-white-50"><i class="fas fa-check"></i></span>--%>
-<%--                    Guardar como Borrador</a>--%>
-<%--                <a type="submit" name="accion" value="completado" class="btn btn-success btn-icon-split">--%>
-<%--                    <span class="icon text-white-50"><i class="fas fa-save"></i></span>--%>
-<%--                    Guardar Registro Completado</a>--%>
-<%--            </div>--%>
-
-
             <div class="text-center mt-4">
                 <button type="button" class="btn btn-success btn-icon-split mr-2" data-toggle="modal" data-target="#SaveRegModal">
                         <span class="icon text-white-50">

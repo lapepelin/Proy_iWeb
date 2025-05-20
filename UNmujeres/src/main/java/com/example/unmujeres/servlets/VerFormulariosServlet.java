@@ -71,7 +71,7 @@ public class VerFormulariosServlet extends HttpServlet {
                     ArrayList<EncHasFormulario> asignaciones = ehfDAO.getByEncuestador(idEnc); // ID hardcodeado
                     //  para cada asignacion
                     for (EncHasFormulario asignacion : asignaciones) {
-                        //System.out.println("\n1. Asignacion extraída: " + asignacion.getIdEncHasFormulario());
+                        System.out.println("\n1. Asignacion extraída: " + asignacion.getIdEncHasFormulario());
                         // 4. Obtener formulario relacionado por el id, obtenido de la asignacion
                         Formulario formulario = formularioDAO.getById(asignacion.getFormulario().getIdFormulario());
                         // si existe formulario y esta activo (formulario.estado=1),
@@ -86,6 +86,7 @@ public class VerFormulariosServlet extends HttpServlet {
                             item.put("registros_esperados", formulario.getRegistrosEsperados());
 
                             // 7. Datos asignacion ehf
+                            item.put("id_asignacion", asignacion.getIdEncHasFormulario());
                             item.put("fecha_asignacion", asignacion.getFechaAsignacion());
                             //System.out.println("3. Fecha de asignacion: " + asignacion.getFechaAsignacion());
 
@@ -273,11 +274,7 @@ public class VerFormulariosServlet extends HttpServlet {
 
                 break;
         }
-
-
-
-
-
+         
     }
 
     @Override
